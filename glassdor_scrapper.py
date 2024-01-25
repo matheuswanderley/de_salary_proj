@@ -27,6 +27,7 @@ def get_jobs(keyword, num_jobs, verbose, path, slp_time):
         keyword+"&sc.keyword="+keyword+"&locT=&locId=&jobType="
     driver.get(url)
     jobs = []
+    modal_appeared = False  # Flag to track if the modal has appeared
 
     # If true, should still be looking for new jobs.
     while len(jobs) < num_jobs:
@@ -48,40 +49,44 @@ def get_jobs(keyword, num_jobs, verbose, path, slp_time):
             # Click the job button
             ActionChains(driver).move_to_element(job_button).click().perform()
 
-            # Aguarde até que o modal apareça
-            try:
-                modal_overlay = WebDriverWait(driver, 10).until(
-                    EC.visibility_of_element_located(
-                        (By.CSS_SELECTOR, '.ModalOverlay'))
-                )
-                print("Modal appeared")
-            except TimeoutException:
-                print("Modal did not appear within 10 seconds")
+            # Aguarde até que o modal apareça (se ainda não apareceu)
+            if not modal_appeared:
+                try:
+                    modal_overlay = WebDriverWait(driver, 0.5).until(
+                        EC.visibility_of_element_located(
+                            (By.CSS_SELECTOR, '.ModalOverlay'))
+                    )
+                    print("Modal appeared")
+                    modal_appeared = True
+                except TimeoutException:
+                    print("Modal did not appear within 0.5 seconds")
 
             # Aguarde até que o modal desapareça
             try:
-                WebDriverWait(driver, 10).until_not(
+                WebDriverWait(driver, 0.5).until_not(
                     EC.visibility_of_element_located(
                         (By.CSS_SELECTOR, '.ModalOverlay'))
                 )
                 print("Modal disappeared")
             except TimeoutException:
-                print("Modal did not disappear within 10 seconds")
+                print("Modal did not disappear within 0.5 seconds")
 
             # Agora que o modal desapareceu, você pode clicar no botão de fechar (X)
             try:
-                close_button = WebDriverWait(driver, 10).until(
+                close_button = WebDriverWait(driver, 0.5).until(
                     EC.element_to_be_clickable(
                         (By.CSS_SELECTOR, 'button.CloseButton'))
                 )
                 close_button.click()
                 print("Close button clicked successfully")
             except TimeoutException:
-                print("Close button not clickable within 10 seconds")
+                print("Close button not clickable within 0.5 seconds")
             except Exception as e:
                 print("Error while clicking close button:", str(e))
 
+            # Aguarde no máximo 1 segundo antes de clicar no próximo botão
             time.sleep(1)
+
             collected_successfully = False
 
             while not collected_successfully:
