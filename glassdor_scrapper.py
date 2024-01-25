@@ -92,26 +92,26 @@ def get_jobs(keyword, num_jobs, verbose, path, slp_time):
             while not collected_successfully:
                 try:
                     company_name = driver.find_element(
-                        By.XPATH, './/div[@data-test="job-card-wrapper"]').text
+                        By.XPATH, './/span[@class="EmployerProfile_employerName__Xemli"]').text
                     location = driver.find_element(
-                        By.XPATH, './/div[@data-test="job-card-wrapper"]').text
+                        By.XPATH, './/div[@data-test="emp-location"]').text
                     job_title = driver.find_element(
-                        By.XPATH, './/div[@data-test="job-card-wrapper"]').text
+                        By.XPATH, './/a[@class="JobCard_seoLink__WdqHZ"]').text
                     job_description = driver.find_element(
-                        By.XPATH, './/div[@data-test="job-card-wrapper"]').text
+                        By.XPATH, './/div[@data-test="descSnippet"]').text
                     collected_successfully = True
                 except:
                     time.sleep(100)
 
             try:
                 salary_estimate = driver.find_element(
-                    By.XPATH, './/span[@class="gray salary"]').text
+                    By.XPATH, './/div[@data-test="detailSalary"]').text
             except NoSuchElementException:
                 salary_estimate = -1  # You need to set a "not found value. It's important."
 
             try:
                 rating = driver.find_element(
-                    By.XPATH, './/span[@class="rating"]').text
+                    By.XPATH, './/div[@class="EmployerProfile_ratingContainer__N4hxE"]').text
             except NoSuchElementException:
                 rating = -1  # You need to set a "not found value. It's important."
 
@@ -230,4 +230,11 @@ def get_jobs(keyword, num_jobs, verbose, path, slp_time):
                 num_jobs, len(jobs)))
             break
 
-    return pd.DataFrame(jobs)
+    # Fora do loop while e após coletar todas as informações
+    df = pd.DataFrame(jobs)
+
+    # Salve o DataFrame como um arquivo CSV
+    df.to_csv('glassdoor_jobs.csv', index=False)
+
+    # Feche o driver após concluir a extração
+    driver.quit()
