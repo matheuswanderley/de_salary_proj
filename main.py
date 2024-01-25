@@ -5,7 +5,6 @@ import pandas as pd
 path = '/home/matheus/science-projects/ds_salary_proj/chromedriver'
 
 # Exemplo de uso
-df = gs_basic.get_jobs('data scientist', 15, path)
+df = gs_basic.get_jobs('data scientist', 15, False, path, 15)
 print("DataFrame Shape:", df.shape)
 print(df.head())
-
