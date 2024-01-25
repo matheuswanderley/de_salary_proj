@@ -53,3 +53,4 @@ def get_jobs(keyword, num_jobs, path):
 
     # Close the webdriver
     driver.quit()
+    

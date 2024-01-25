@@ -8,3 +8,4 @@ path = '/home/matheus/science-projects/ds_salary_proj/chromedriver'
 df = gs_basic.get_jobs('data scientist', 15, path)
 print("DataFrame Shape:", df.shape)
 print(df.head())
+
