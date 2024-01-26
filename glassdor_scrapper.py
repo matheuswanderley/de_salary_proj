@@ -1,3 +1,10 @@
+"""
+Created on Fry jan  26 08:11:36 2024
+
+author: Kenarapfaik
+url: https://github.com/arapfaik/scraping-glassdoor-selenium
+"""
+
 from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException, TimeoutException
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -101,7 +108,7 @@ def get_jobs(keyword, num_jobs, verbose, path, slp_time):
                         By.XPATH, './/div[@data-test="descSnippet"]').text
                     collected_successfully = True
                 except:
-                    time.sleep(100)
+                    time.sleep(1)
 
             try:
                 salary_estimate = driver.find_element(
@@ -130,7 +137,7 @@ def get_jobs(keyword, num_jobs, verbose, path, slp_time):
             # <div class="tab" data-tab-type="overview"><span>Company</span></div>
             try:
                 driver.find_element(
-                    By.XPATH, './/div[@class="tab" and @data-tab-type="overview"]').click()
+                    By.XPATH, '//*[@id="app-navigation"]/div[3]/div[2]/div[2]/div[1]/section/section[2]')
 
                 try:
                     # <div class="infoEntity">
@@ -138,43 +145,43 @@ def get_jobs(keyword, num_jobs, verbose, path, slp_time):
                     #    <span class="value">San Francisco, CA</span>
                     # </div>
                     headquarters = driver.find_element(
-                        By.XPATH, './/div[@class="infoEntity"]//label[text()="Headquarters"]//following-sibling::*').text
+                        By.XPATH, '//*[@id="app-navigation"]/div[3]/div[2]/div[2]/div[1]/header/div[1]/div').text
                 except NoSuchElementException:
                     headquarters = -1
 
                 try:
                     size = driver.find_element(
-                        By.XPATH, './/div[@class="infoEntity"]//label[text()="Size"]//following-sibling::*').text
+                        By.XPATH, '//*[@id="app-navigation"]/div[3]/div[2]/div[2]/div[1]/section/section[2]/div/div/div[1]/div').text
                 except NoSuchElementException:
                     size = -1
 
                 try:
                     founded = driver.find_element(
-                        By.XPATH, './/div[@class="infoEntity"]//label[text()="Founded"]//following-sibling::*').text
+                        By.XPATH, '//*[@id="app-navigation"]/div[3]/div[2]/div[2]/div[1]/section/section[2]/div/div/div[2]/div').text
                 except NoSuchElementException:
                     founded = -1
 
                 try:
                     type_of_ownership = driver.find_element(
-                        By.XPATH, './/div[@class="infoEntity"]//label[text()="Type"]//following-sibling::*').text
+                        By.XPATH, '//*[@id="app-navigation"]/div[3]/div[2]/div[2]/div[1]/section/section[2]/div/div/div[3]/div').text
                 except NoSuchElementException:
                     type_of_ownership = -1
 
                 try:
                     industry = driver.find_element(
-                        By.XPATH, './/div[@class="infoEntity"]//label[text()="Industry"]//following-sibling::*').text
+                        By.XPATH, '//*[@id="app-navigation"]/div[3]/div[2]/div[2]/div[1]/section/section[2]/div/div/div[4]/div').text
                 except NoSuchElementException:
                     industry = -1
 
                 try:
                     sector = driver.find_element(
-                        By.XPATH, './/div[@class="infoEntity"]//label[text()="Sector"]//following-sibling::*').text
+                        By.XPATH, '//*[@id="app-navigation"]/div[3]/div[2]/div[2]/div[1]/section/section[2]/div/div/div[5]/div').text
                 except NoSuchElementException:
                     sector = -1
 
                 try:
                     revenue = driver.find_element(
-                        By.XPATH, './/div[@class="infoEntity"]//label[text()="Revenue"]//following-sibling::*').text
+                        By.XPATH, '//*[@id="app-navigation"]/div[3]/div[2]/div[2]/div[1]/section/section[2]/div/div/div[6]/div').text
                 except NoSuchElementException:
                     revenue = -1
 
